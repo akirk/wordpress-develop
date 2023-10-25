@@ -536,7 +536,7 @@ class WP_HTML_Tag_Processor {
 	 * }
 	 * @return bool Whether a tag was matched.
 	 */
-	public function next_tag( $query = null ) {
+	public function next_tag( $query = null, $return_wp_html_tag = false ) {
 		$this->parse_query( $query );
 		$already_found = 0;
 
@@ -621,6 +621,10 @@ class WP_HTML_Tag_Processor {
 				}
 			}
 		} while ( $already_found < $this->sought_match_offset );
+
+		if ( $return_wp_html_tag ) {
+			return new WP_HTML_Tag( $this );
+		}
 
 		return true;
 	}
