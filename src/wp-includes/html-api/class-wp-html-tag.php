@@ -1,20 +1,18 @@
 <?php
 
 class WP_HTML_Tag {
-	static $bookmark_id = 0;
 	private $processor;
-	private $bookmark;
+	private $tag_name_starts_at;
 	public function __construct( WP_HTML_Tag_Processor $processor ) {
 		$this->processor = $processor;
-		$this->bookmark = 'html-tag-' . ++self::$bookmark_id;
-		$this->processor->set_bookmark( $this->bookmark );
+		$this->tag_name_starts_at = $processor->tag_name_starts_at;
 	}
 
 	public function __call( $name, $arguments ) {
-		$this->processor->set_bookmark( 'current' . $this->bookmark );
-		$this->processor->seek( $this->bookmark );
+		if ( $this->tag_name_starts_at !== $this->processor->tag_name_starts_at ) {
+			throw new Exception;
+		}
 		$return = call_user_func_array( array( $this->processor, $name ), $arguments );
-		$this->processor->seek( 'current' . $this->bookmark );
 		return $return;
 	}
 }

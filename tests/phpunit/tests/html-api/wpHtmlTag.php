@@ -14,15 +14,16 @@
 class Tests_HtmlApi_WpHtmlTag extends WP_UnitTestCase {
 	public function test_generic() {
 		$p = new WP_HTML_Tag_Processor( '<html><a href="test"></a><b id="hello"></b><strong class="howdy"></strong>' );
-		$a = $p->next_tag( 'a',true );
+		$a = $p->next_tag( 'a', true );
 		$this->assertEquals( 'test', $a->get_attribute( 'href' ) );
 		$this->assertEquals( 'A', $a->get_tag() );
 
-		$b = $p->next_tag( 'b',true );
+		$b = $p->next_tag( 'b', true );
 		$this->assertEquals( 'hello',  $b->get_attribute( 'id' ) );
 		$this->assertEquals( 'B', $b->get_tag() );
+
+		$this->expectException( Exception::class );
 		$this->assertEquals( 'test',  $a->get_attribute( 'href' ) );
-		$this->assertEquals( 'A', $a->get_tag() );
 
 	}
 }
