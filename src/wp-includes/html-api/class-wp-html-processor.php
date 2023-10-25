@@ -361,7 +361,7 @@ class WP_HTML_Processor extends WP_HTML_Tag_Processor {
 	 * }
 	 * @return bool Whether a tag was matched.
 	 */
-	public function next_tag( $query = null ) {
+	public function next_tag( $query = null, $return_wp_html_tag = false ) {
 		if ( null === $query ) {
 			while ( $this->step() ) {
 				if ( ! $this->is_tag_closer() ) {
@@ -409,6 +409,10 @@ class WP_HTML_Processor extends WP_HTML_Tag_Processor {
 
 		while ( $match_offset > 0 && $this->step() ) {
 			if ( $this->matches_breadcrumbs( $breadcrumbs ) && 0 === --$match_offset ) {
+				if ( $return_wp_html_tag ) {
+					return new WP_HTML_Tag( $this );
+				}
+
 				return true;
 			}
 		}
